@@ -4,6 +4,7 @@ import (
 	"net/url"
 
 	"github.com/spiegel-im-spiegel/go-myjvn/request"
+	"github.com/spiegel-im-spiegel/go-myjvn/rss"
 )
 
 func VulnOverviewListXml() ([]byte, error) {
@@ -13,6 +14,14 @@ func VulnOverviewListXml() ([]byte, error) {
 		"lang":   {"ja"},
 	}
 	return request.Api(values)
+}
+
+func VulnOverviewList() (*rss.JVNRSS, error) {
+	data, err := VulnOverviewListXml()
+	if err != nil {
+		return nil, err
+	}
+	return rss.Unmarshal(data)
 }
 
 /* Copyright 2018 Spiegel

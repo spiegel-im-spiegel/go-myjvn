@@ -11,6 +11,13 @@ func TestVulnOverviewListXml(t *testing.T) {
 	}
 }
 
+func TestVulnOverviewList(t *testing.T) {
+	rss, err := VulnOverviewList()
+	if err != nil {
+		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
+	}
+}
+
 /* Copyright 2018 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

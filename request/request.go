@@ -7,12 +7,12 @@ import (
 )
 
 const (
-	urlMyJVN = "https://jvndb.jvn.jp/myjvn" //path for MyJVN RESTful API
+	pathMyJVN = "https://jvndb.jvn.jp/myjvn" //path for MyJVN RESTful API
 )
 
 //Api calls a MyJVN RESTful API.
 func Api(v url.Values) ([]byte, error) {
-	resp, err := new(http.Client).Get(urlMyJVN + "?" + v.Encode())
+	resp, err := new(http.Client).Get(pathMyJVN + "?" + v.Encode())
 	if err != nil {
 		return nil, err
 	}
