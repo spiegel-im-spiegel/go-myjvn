@@ -271,31 +271,18 @@ xml:lang="ja">
         }
       ]
     }
-  ],
-  "Status": {
-    "version": "3.3",
-    "method": "getVulnOverviewList",
-    "lang": "ja",
-    "feed": "hnd",
-    "retCd": 0,
-    "retMax": 50,
-    "errCd": "",
-    "errMsg": "",
-    "totalRes": 3,
-    "totalResRet": 3,
-    "firstRes": 1
-  }
+  ]
 }`
 	rss, err := Unmarshal([]byte(data))
 	if err != nil {
-		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
+		t.Errorf("Unmarshal() = \"%v\", want nil.", err)
 	}
 	json, err := rss.JSON("  ")
 	if err != nil {
-		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
+		t.Errorf("JSON() = \"%v\", want nil.", err)
 	}
 	if string(json) != res {
-		t.Errorf("VulnOverviewList()Channel.Title = \"%v\", want \"%v\".", string(json), res)
+		t.Errorf("Unmarshal().JSON() = \"%v\", want \"%v\".", string(json), res)
 	}
 }
 

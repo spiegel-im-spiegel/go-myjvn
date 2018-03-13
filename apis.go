@@ -1,10 +1,12 @@
 package myjvn
 
 import (
+	"errors"
 	"net/url"
 
 	"github.com/spiegel-im-spiegel/go-myjvn/request"
 	"github.com/spiegel-im-spiegel/go-myjvn/rss"
+	"github.com/spiegel-im-spiegel/go-myjvn/status"
 )
 
 //VulnOverviewListXML calls a MyJVN RESTful API: "getVulnOverviewList", and returns XML data
@@ -22,6 +24,13 @@ func VulnOverviewList() (*rss.JVNRSS, error) {
 	data, err := VulnOverviewListXML()
 	if err != nil {
 		return nil, err
+	}
+	stat, err := status.Unmarshal(data)
+	if err != nil {
+		return nil, err
+	}
+	if stat.Status.ReturnCode != 0 {
+		return nil, errors.New(stat.Status.ErrorMsg)
 	}
 	return rss.Unmarshal(data)
 }
