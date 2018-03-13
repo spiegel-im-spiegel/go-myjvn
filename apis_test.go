@@ -18,6 +18,22 @@ func TestVulnOverviewList(t *testing.T) {
 	}
 }
 
+func TestVulnDetailInfoXML(t *testing.T) {
+	vulnID := []string{"JVNDB-2018-000022", "JVNDB-2018-000024"}
+	_, err := VulnDetailInfoXML(vulnID)
+	if err != nil {
+		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
+	}
+}
+
+func TestVulnDetailInfo(t *testing.T) {
+	vulnID := []string{"JVNDB-2018-000022", "JVNDB-2018-000024"}
+	_, err := VulnDetailInfo(vulnID)
+	if err != nil {
+		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
+	}
+}
+
 /* Copyright 2018 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

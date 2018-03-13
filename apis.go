@@ -3,6 +3,8 @@ package myjvn
 import (
 	"errors"
 	"net/url"
+	"os"
+	"strings"
 
 	"github.com/spiegel-im-spiegel/go-myjvn/request"
 	"github.com/spiegel-im-spiegel/go-myjvn/rss"
@@ -22,6 +24,37 @@ func VulnOverviewListXML() ([]byte, error) {
 //VulnOverviewList calls a MyJVN RESTful API: "getVulnOverviewList", and returns JVNRSS value
 func VulnOverviewList() (*rss.JVNRSS, error) {
 	data, err := VulnOverviewListXML()
+	if err != nil {
+		return nil, err
+	}
+	stat, err := status.Unmarshal(data)
+	if err != nil {
+		return nil, err
+	}
+	if stat.Status.ReturnCode != 0 {
+		return nil, errors.New(stat.Status.ErrorMsg)
+	}
+	return rss.Unmarshal(data)
+}
+
+//VulnDetailInfoXML calls a MyJVN RESTful API: "getVulnDetailInfo", and returns XML data
+func VulnDetailInfoXML(vulnID []string) ([]byte, error) {
+	if len(vulnID) == 0 {
+		return nil, os.ErrInvalid
+	}
+
+	values := url.Values{
+		"method": {"getVulnDetailInfo"},
+		"feed":   {"hnd"},
+		"lang":   {"ja"},
+		"vulnId": {strings.Join(vulnID, "+")},
+	}
+	return request.API(values)
+}
+
+//VulnDetailInfo calls a MyJVN RESTful API: "getVulnDetailInfo", and returns VULDEF value
+func VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
+	data, err := VulnDetailInfoXML(vulnID)
 	if err != nil {
 		return nil, err
 	}
