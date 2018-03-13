@@ -109,23 +109,182 @@ xml:lang="ja">
       "description": "株式会社コレガが提供する CG-WGR1200 は無線 LAN ルータです。CG-WGR1200 には、次の複数の脆弱性が存在します。 ・バッファオーバーフロー (CWE-119) - CVE-2017-10852 ・OS コマンドインジェクション (CWE-78) - CVE-2017-10853 ・認証不備 (CWE-306) - CVE-2017-10854  この脆弱性情報は、情報セキュリティ早期警戒パートナーシップに基づき下記の方が IPA に報告し、JPCERT/CC が開発者との調整を行いました。 報告者: 三井物産セキュアディレクション株式会社 塚本 泰三 氏",
       "link": "https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000024.html",
       "date": "2018-03-09T12:04:48+09:00",
-      "modified": "2018-03-09T12:04:48+09:00"
+      "issued": "2018-03-09T12:04:48+09:00",
+      "modified": "2018-03-09T12:04:48+09:00",
+      "creator": "Information-technology Promotion Agency, Japan",
+      "identifier": "JVNDB-2018-000024",
+      "references": [
+        {
+          "id": "CVE-2017-10852",
+          "source": "CVE",
+          "value": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-10852"
+        },
+        {
+          "id": "CVE-2017-10853",
+          "source": "CVE",
+          "value": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-10853"
+        },
+        {
+          "id": "CVE-2017-10854",
+          "source": "CVE",
+          "value": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2017-10854"
+        },
+        {
+          "id": "JVN#15201064",
+          "source": "JVN",
+          "value": "https://jvn.jp/jp/JVN15201064/index.html"
+        },
+        {
+          "id": "CWE-19",
+          "title": "データ処理(CWE-19)",
+          "value": "https://cwe.mitre.org/data/definitions/19.html"
+        },
+        {
+          "id": "CWE-264",
+          "title": "認可・権限・アクセス制御(CWE-264)",
+          "value": "https://jvndb.jvn.jp/ja/cwe/CWE-264.html"
+        },
+        {
+          "id": "CWE-78",
+          "title": "OSコマンドインジェクション(CWE-78)",
+          "value": "https://jvndb.jvn.jp/ja/cwe/CWE-78.html"
+        }
+      ],
+      "cpe": {
+        "version": "2.2",
+        "vendor": "株式会社コレガ",
+        "product": "CG-WGR1200",
+        "value": "cpe:/h:corega:cg-wgr1200"
+      },
+      "cvss": [
+        {
+          "version": "3.0",
+          "type": "Base",
+          "vector": "CVSS:3.0/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "score": "8.8",
+          "severity": "High"
+        },
+        {
+          "version": "2.0",
+          "type": "Base",
+          "vector": "AV:A/AC:L/Au:N/C:P/I:P/A:P",
+          "score": "5.8",
+          "severity": "Medium"
+        }
+      ]
     },
     {
       "title": "WordPress 用プラグイン WP All Import におけるクロスサイトスクリプティングの脆弱性",
       "description": "Soflyy が提供する WordPress 用プラグイン WP All Import には、反射型のクロスサイトスクリプティング (CWE-79) の脆弱性が存在します。  なお、本脆弱性は JVN#33527174 とは異なる問題です。  この脆弱性情報は、情報セキュリティ早期警戒パートナーシップに基づき下記の方が IPA に報告し、JPCERT/CC が開発者との調整を行いました。 報告者: NTTコミュニケーションズ株式会社 東内裕二 氏",
       "link": "https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000023.html",
       "date": "2018-03-08T12:04:53+09:00",
-      "modified": "2018-03-08T12:04:53+09:00"
+      "issued": "2018-03-08T12:04:53+09:00",
+      "modified": "2018-03-08T12:04:53+09:00",
+      "creator": "Information-technology Promotion Agency, Japan",
+      "identifier": "JVNDB-2018-000023",
+      "references": [
+        {
+          "id": "CVE-2018-0547",
+          "source": "CVE",
+          "value": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0547"
+        },
+        {
+          "id": "JVN#60032768",
+          "source": "JVN",
+          "value": "https://jvn.jp/jp/JVN60032768/index.html"
+        },
+        {
+          "id": "CWE-79",
+          "title": "クロスサイトスクリプティング(CWE-79)",
+          "value": "https://jvndb.jvn.jp/ja/cwe/CWE-79.html"
+        }
+      ],
+      "cpe": {
+        "version": "2.2",
+        "vendor": "Soflyy",
+        "product": "WP All Import",
+        "value": "cpe:/a:misc:soflyy_wp_all_import"
+      },
+      "cvss": [
+        {
+          "version": "3.0",
+          "type": "Base",
+          "vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "score": "6.1",
+          "severity": "Medium"
+        },
+        {
+          "version": "2.0",
+          "type": "Base",
+          "vector": "AV:N/AC:H/Au:N/C:N/I:P/A:N",
+          "score": "2.6",
+          "severity": "Low"
+        }
+      ]
     },
     {
       "title": "WordPress 用プラグイン WP All Import におけるクロスサイトスクリプティングの脆弱性",
       "description": "Soflyy が提供する WordPress 用プラグイン WP All Import には、ファイルアップロード機能に関するクロスサイトスクリプティング (CWE-79) の脆弱性が存在します。  なお、本脆弱性は JVN#60032768 とは異なる問題です。  この脆弱性情報は、情報セキュリティ早期警戒パートナーシップに基づき下記の方が IPA に報告し、JPCERT/CC が開発者との調整を行いました。 報告者: ゲヒルン株式会社 マルダン ムイデン 氏",
       "link": "https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000022.html",
       "date": "2018-03-08T12:02:28+09:00",
-      "modified": "2018-03-08T12:02:28+09:00"
+      "issued": "2018-03-08T12:02:28+09:00",
+      "modified": "2018-03-08T12:02:28+09:00",
+      "creator": "Information-technology Promotion Agency, Japan",
+      "identifier": "JVNDB-2018-000022",
+      "references": [
+        {
+          "id": "CVE-2018-0546",
+          "source": "CVE",
+          "value": "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2018-0546"
+        },
+        {
+          "id": "JVN#33527174",
+          "source": "JVN",
+          "value": "https://jvn.jp/jp/JVN33527174/index.html"
+        },
+        {
+          "id": "CWE-79",
+          "title": "クロスサイトスクリプティング(CWE-79)",
+          "value": "https://jvndb.jvn.jp/ja/cwe/CWE-79.html"
+        }
+      ],
+      "cpe": {
+        "version": "2.2",
+        "vendor": "Soflyy",
+        "product": "WP All Import",
+        "value": "cpe:/a:misc:soflyy_wp_all_import"
+      },
+      "cvss": [
+        {
+          "version": "3.0",
+          "type": "Base",
+          "vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "score": "6.1",
+          "severity": "Medium"
+        },
+        {
+          "version": "2.0",
+          "type": "Base",
+          "vector": "AV:N/AC:M/Au:N/C:N/I:P/A:N",
+          "score": "4.3",
+          "severity": "Medium"
+        }
+      ]
     }
-  ]
+  ],
+  "Status": {
+    "version": "3.3",
+    "method": "getVulnOverviewList",
+    "lang": "ja",
+    "feed": "hnd",
+    "retCd": 0,
+    "retMax": 50,
+    "errCd": "",
+    "errMsg": "",
+    "totalRes": 3,
+    "totalResRet": 3,
+    "firstRes": 1
+  }
 }`
 	rss, err := Unmarshal([]byte(data))
 	if err != nil {
@@ -146,7 +305,7 @@ xml:lang="ja">
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,

@@ -5,14 +5,14 @@ import (
 )
 
 func TestVulnOverviewListXml(t *testing.T) {
-	_, err := VulnOverviewListXml()
+	_, err := VulnOverviewListXML()
 	if err != nil {
 		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
 	}
 }
 
 func TestVulnOverviewList(t *testing.T) {
-	rss, err := VulnOverviewList()
+	_, err := VulnOverviewList()
 	if err != nil {
 		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
 	}

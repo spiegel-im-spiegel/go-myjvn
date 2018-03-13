@@ -10,8 +10,8 @@ const (
 	pathMyJVN = "https://jvndb.jvn.jp/myjvn" //path for MyJVN RESTful API
 )
 
-//Api calls a MyJVN RESTful API.
-func Api(v url.Values) ([]byte, error) {
+//API calls a MyJVN RESTful API.
+func API(v url.Values) ([]byte, error) {
 	resp, err := new(http.Client).Get(pathMyJVN + "?" + v.Encode())
 	if err != nil {
 		return nil, err

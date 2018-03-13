@@ -7,17 +7,19 @@ import (
 	"github.com/spiegel-im-spiegel/go-myjvn/rss"
 )
 
-func VulnOverviewListXml() ([]byte, error) {
+//VulnOverviewListXML calls a MyJVN RESTful API: "getVulnOverviewList", and returns XML data
+func VulnOverviewListXML() ([]byte, error) {
 	values := url.Values{
 		"method": {"getVulnOverviewList"},
 		"feed":   {"hnd"},
 		"lang":   {"ja"},
 	}
-	return request.Api(values)
+	return request.API(values)
 }
 
+//VulnOverviewList calls a MyJVN RESTful API: "getVulnOverviewList", and returns JVNRSS value
 func VulnOverviewList() (*rss.JVNRSS, error) {
-	data, err := VulnOverviewListXml()
+	data, err := VulnOverviewListXML()
 	if err != nil {
 		return nil, err
 	}

@@ -44,9 +44,9 @@ type JVNRSS struct {
 		Creator     string `xml:"creator" json:"creator"`
 		Identifier  string `xml:"identifier" json:"identifier"`
 		References  []struct {
-			Id     string `xml:"id,attr" json:"id"`
-			Title  string `xml:"title,attr" json:"title,omitempty"`
-			Source string `xml:"source,attr" json:"source,omitempty"`
+			ID     string `xml:"id,attr" json:"id"`
+			Title  string `xml:"title,attr,omitempty" json:"title,omitempty"`
+			Source string `xml:"source,attr,omitempty" json:"source,omitempty"`
 			Value  string `xml:",chardata" json:"value"`
 		} `xml:"references" json:"references"`
 		Cpe struct {
@@ -63,8 +63,22 @@ type JVNRSS struct {
 			Severity string `xml:"severity,attr" json:"severity"`
 		} `xml:"cvss" json:"cvss"`
 	} `xml:"item" json:"item"`
+	Status struct {
+		Version     string `xml:"version,attr" json:"version"`         //MyJVN API Schema Version
+		Method      string `xml:"method,attr" json:"method"`           //Method
+		Language    string `xml:"lang,attr" json:"lang"`               //Language (ja/en)
+		Feed        string `xml:"feed,attr" json:"feed"`               //Feed version
+		ReturnCode  int    `xml:"retCd,attr" json:"retCd"`             //Return Code/Interger (0:success, 1:failure)
+		ReturnMax   int    `xml:"retMax,attr" json:"retMax"`           //Maximum number of Entry/Interger
+		ErrorCode   string `xml:"errCd,attr" json:"errCd"`             //Error Code (Null:success)
+		ErrorMsg    string `xml:"errMsg,attr" json:"errMsg"`           //Error Message (Null:success)
+		TotalRes    int    `xml:"totalRes,attr" json:"totalRes"`       //Total number of Result entries
+		TotalResRet int    `xml:"totalResRet,attr" json:"totalResRet"` //Number of Result entries
+		FirstRes    int    `xml:"firstRes,attr" json:"firstRes"`       //Start entry number in Result entries
+	} `xml:"Status" json:"Status"`
 }
 
+//Unmarshal returns JVNRSS value, unmarshalling XML data
 func Unmarshal(data []byte) (*JVNRSS, error) {
 	rss := &JVNRSS{}
 	if err := xml.Unmarshal(data, rss); err != nil {
@@ -73,6 +87,7 @@ func Unmarshal(data []byte) (*JVNRSS, error) {
 	return rss, nil
 }
 
+//JSON returns JSON string
 func (rss *JVNRSS) JSON(indent string) ([]byte, error) {
 	if len(indent) > 0 {
 		return json.MarshalIndent(rss, "", indent)

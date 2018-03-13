@@ -11,7 +11,7 @@ func TestApi(t *testing.T) {
 		"feed":   {"hnd"},
 		"lang":   {"ja"},
 	}
-	_, err := Api(values)
+	_, err := API(values)
 	if err != nil {
 		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
 	}
