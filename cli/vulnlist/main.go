@@ -35,6 +35,10 @@ func run(start, end time.Time) {
 			return
 		}
 		maxItem = stat.Status.TotalRes
+		if maxItem == 0 {
+			fmt.Fprintln(os.Stderr, "no data")
+			return
+		}
 		rss, err := rss.Unmarshal(xml)
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
@@ -44,7 +48,7 @@ func run(start, end time.Time) {
 		size := len(rss.Items)
 		for {
 			ids := []string{}
-			for i := 0; i < 10; i++ {
+			for i := 0; i < vuldef.MaxItems; i++ {
 				if (index + i) >= size {
 					break
 				}

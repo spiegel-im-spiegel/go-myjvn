@@ -7,6 +7,10 @@ import (
 	"github.com/spiegel-im-spiegel/go-myjvn/values"
 )
 
+const (
+	MaxItems = 50
+)
+
 //JVNRSS is structure of JVNRSS
 type JVNRSS struct {
 	Channel struct {

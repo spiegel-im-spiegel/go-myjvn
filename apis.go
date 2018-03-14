@@ -30,7 +30,7 @@ func (api *APIs) VulnOverviewListXML(opt *option.Option) ([]byte, error) {
 		"method":       {"getVulnOverviewList"},
 		"feed":         {"hnd"},
 		"lang":         {"ja"},
-		"maxCountItem": {"50"},
+		"maxCountItem": {strconv.Itoa(rss.MaxItems)},
 	}
 	opt.AddQuery(values)
 	return api.client.Request(values)
@@ -54,7 +54,7 @@ func (api *APIs) VulnOverviewList(opt *option.Option) (*rss.JVNRSS, error) {
 
 //VulnDetailInfoXML calls a MyJVN RESTful API: "getVulnDetailInfo", and returns XML data
 func (api *APIs) VulnDetailInfoXML(vulnID []string) ([]byte, error) {
-	if len(vulnID) <= 0 || len(vulnID) > 10 {
+	if len(vulnID) <= 0 || len(vulnID) > vuldef.MaxItems {
 		return nil, os.ErrInvalid
 	}
 

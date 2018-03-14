@@ -9,6 +9,10 @@ import (
 	"github.com/spiegel-im-spiegel/go-myjvn/values"
 )
 
+const (
+	MaxItems = 10
+)
+
 //VULDEF is structure of VULDEF
 type VULDEF struct {
 	Vulinfo []struct {
