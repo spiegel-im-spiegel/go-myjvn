@@ -3,6 +3,7 @@ package status
 import (
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 )
 
 //Ststus is structure of Ststus
@@ -37,6 +38,14 @@ func (stat *Ststus) JSON(indent string) ([]byte, error) {
 		return json.MarshalIndent(stat, "", indent)
 	}
 	return json.Marshal(stat)
+}
+
+//GetError returns error instance
+func (stat *Ststus) GetError() error {
+	if stat.Status.ReturnCode != 0 {
+		return fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
+	}
+	return nil
 }
 
 /* Copyright 2018 Spiegel

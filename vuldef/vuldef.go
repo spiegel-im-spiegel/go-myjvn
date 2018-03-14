@@ -10,6 +10,7 @@ import (
 )
 
 const (
+	//MaxItems is max of items for "getVulnDetailInfo" API
 	MaxItems = 10
 )
 
@@ -88,14 +89,13 @@ func (vuln *VULDEF) Append(appnd *VULDEF) {
 	vuln.Vulinfo = append(vuln.Vulinfo, appnd.Vulinfo...)
 }
 
-//Sort sorts Vulinfo data
+//SortByID sorts Vulinfo data by VulinfoID
 func (vuln *VULDEF) SortByID(reverseFlag bool) {
 	sort.Slice(vuln.Vulinfo, func(i int, j int) bool {
 		if reverseFlag {
 			return strings.Compare(vuln.Vulinfo[i].VulinfoID, vuln.Vulinfo[j].VulinfoID) > 0
-		} else {
-			return strings.Compare(vuln.Vulinfo[i].VulinfoID, vuln.Vulinfo[j].VulinfoID) < 0
 		}
+		return strings.Compare(vuln.Vulinfo[i].VulinfoID, vuln.Vulinfo[j].VulinfoID) < 0
 	})
 }
 

@@ -16,7 +16,6 @@ func run(start, end time.Time) {
 	api := myjvn.New()
 
 	startItem := 1
-	maxItem := 0
 	vulnInfo := (*vuldef.VULDEF)(nil)
 	for {
 		opt := option.New(
@@ -34,7 +33,11 @@ func run(start, end time.Time) {
 			fmt.Fprintln(os.Stderr, err)
 			return
 		}
-		maxItem = stat.Status.TotalRes
+		if err := stat.GetError(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			return
+		}
+		maxItem := stat.Status.TotalRes
 		if maxItem == 0 {
 			fmt.Fprintln(os.Stderr, "no data")
 			return
@@ -81,7 +84,7 @@ func run(start, end time.Time) {
 			fmt.Fprintln(os.Stderr, err)
 			return
 		}
-		fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
+		//fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
 		fmt.Println(string(json))
 	}
 }

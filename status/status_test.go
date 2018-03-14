@@ -9,7 +9,7 @@ func TestUnmarshal(t *testing.T) {
 xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
 xmlns:status="http://jvndb.jvn.jp/myjvn/Status"
 xml:lang="ja">
-  <status:Status version="3.3" method="getVulnDetailInfo" lang="ja" retCd="0" retMax="10" errCd="" errMsg="" totalRes="2" totalResRet="2" firstRes="1" feed="hnd" vulnId="JVNDB-2018-000024+JVNDB-2018-000022"/>
+  <status:Status version="3.3" method="getVulnDetailInfo" lang="ja" retCd="1" retMax="10" errCd="XXX" errMsg="Test Error" totalRes="2" totalResRet="2" firstRes="1" feed="hnd" vulnId="JVNDB-2018-000024+JVNDB-2018-000022"/>
 </rdf:RDF>
 `
 	res := `{
@@ -18,10 +18,10 @@ xml:lang="ja">
     "method": "getVulnDetailInfo",
     "lang": "ja",
     "feed": "hnd",
-    "retCd": 0,
+    "retCd": 1,
     "retMax": 10,
-    "errCd": "",
-    "errMsg": "",
+    "errCd": "XXX",
+    "errMsg": "Test Error",
     "totalRes": 2,
     "totalResRet": 2,
     "firstRes": 1
@@ -30,6 +30,9 @@ xml:lang="ja">
 	stat, err := Unmarshal([]byte(data))
 	if err != nil {
 		t.Errorf("Unmarshal() = \"%v\", want nil.", err)
+	}
+	if err = stat.GetError(); err == nil {
+		t.Error("GetError() = nil, not want nil.")
 	}
 	json, err := stat.JSON("  ")
 	if err != nil {

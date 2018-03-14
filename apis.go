@@ -1,7 +1,6 @@
 package myjvn
 
 import (
-	"fmt"
 	"net/url"
 	"os"
 	"strconv"
@@ -46,8 +45,8 @@ func (api *APIs) VulnOverviewList(opt *option.Option) (*rss.JVNRSS, error) {
 	if err != nil {
 		return nil, err
 	}
-	if stat.Status.ReturnCode != 0 {
-		return nil, fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
+	if err := stat.GetError(); err != nil {
+		return nil, err
 	}
 	return rss.Unmarshal(data)
 }
@@ -79,8 +78,8 @@ func (api *APIs) VulnDetailInfo(vulnID []string) (*vuldef.VULDEF, error) {
 	if err != nil {
 		return nil, err
 	}
-	if stat.Status.ReturnCode != 0 {
-		return nil, fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
+	if err := stat.GetError(); err != nil {
+		return nil, err
 	}
 	return vuldef.Unmarshal(data)
 }

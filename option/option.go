@@ -49,7 +49,7 @@ func WithRangeMode(mode RangeMode) OptFunc {
 	}
 }
 
-//WithStartItem returns function for setting rangeDate
+//WithRangeDate returns function for setting rangeDate
 func WithRangeDate(start, end time.Time) OptFunc {
 	if start.After(end) {
 		start, end = end, start
@@ -68,6 +68,7 @@ func WithSeverity(se Severity) OptFunc {
 	}
 }
 
+//AddQuery makes query of URL
 func (o Option) AddQuery(query url.Values) {
 	query.Add("startItem", strconv.Itoa(o.startItem))
 	if o.severity != SeverityNone {

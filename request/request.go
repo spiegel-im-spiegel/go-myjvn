@@ -31,7 +31,7 @@ func (c *MyJVNClient) Request(v url.Values) ([]byte, error) {
 	}
 	defer resp.Body.Close()
 
-	if err = checkStatus(resp); err != nil {
+	if err = getError(resp); err != nil {
 		return nil, err
 	}
 
@@ -42,7 +42,7 @@ func (c *MyJVNClient) Request(v url.Values) ([]byte, error) {
 	return body, nil
 }
 
-func checkStatus(resp *http.Response) error {
+func getError(resp *http.Response) error {
 	if !(resp.StatusCode != 0 && resp.StatusCode < http.StatusBadRequest) {
 		return errors.New(resp.Status)
 	}

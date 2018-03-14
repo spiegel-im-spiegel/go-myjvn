@@ -8,6 +8,7 @@ import (
 )
 
 const (
+	//MaxItems is max of items for "getVulnOverviewList" API
 	MaxItems = 50
 )
 
