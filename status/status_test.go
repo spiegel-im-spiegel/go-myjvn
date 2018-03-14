@@ -24,8 +24,7 @@ xml:lang="ja">
     "errMsg": "",
     "totalRes": 2,
     "totalResRet": 2,
-    "firstRes": 1,
-    "vulnId": "JVNDB-2018-000024+JVNDB-2018-000022"
+    "firstRes": 1
   }
 }`
 	stat, err := Unmarshal([]byte(data))

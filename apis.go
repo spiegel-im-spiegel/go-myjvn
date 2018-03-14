@@ -4,11 +4,14 @@ import (
 	"fmt"
 	"net/url"
 	"os"
+	"strconv"
 	"strings"
 
+	"github.com/spiegel-im-spiegel/go-myjvn/option"
 	"github.com/spiegel-im-spiegel/go-myjvn/request"
 	"github.com/spiegel-im-spiegel/go-myjvn/rss"
 	"github.com/spiegel-im-spiegel/go-myjvn/status"
+	"github.com/spiegel-im-spiegel/go-myjvn/vuldef"
 )
 
 //APIs implements MyJVN RESTful API
@@ -22,18 +25,20 @@ func New() *APIs {
 }
 
 //VulnOverviewListXML calls a MyJVN RESTful API: "getVulnOverviewList", and returns XML data
-func (api *APIs) VulnOverviewListXML() ([]byte, error) {
+func (api *APIs) VulnOverviewListXML(opt *option.Option) ([]byte, error) {
 	values := url.Values{
-		"method": {"getVulnOverviewList"},
-		"feed":   {"hnd"},
-		"lang":   {"ja"},
+		"method":       {"getVulnOverviewList"},
+		"feed":         {"hnd"},
+		"lang":         {"ja"},
+		"maxCountItem": {"50"},
 	}
+	opt.AddQuery(values)
 	return api.client.Request(values)
 }
 
 //VulnOverviewList calls a MyJVN RESTful API: "getVulnOverviewList", and returns JVNRSS value
-func (api *APIs) VulnOverviewList() (*rss.JVNRSS, error) {
-	data, err := api.VulnOverviewListXML()
+func (api *APIs) VulnOverviewList(opt *option.Option) (*rss.JVNRSS, error) {
+	data, err := api.VulnOverviewListXML(opt)
 	if err != nil {
 		return nil, err
 	}
@@ -49,21 +54,23 @@ func (api *APIs) VulnOverviewList() (*rss.JVNRSS, error) {
 
 //VulnDetailInfoXML calls a MyJVN RESTful API: "getVulnDetailInfo", and returns XML data
 func (api *APIs) VulnDetailInfoXML(vulnID []string) ([]byte, error) {
-	if len(vulnID) == 0 {
+	if len(vulnID) <= 0 || len(vulnID) > 10 {
 		return nil, os.ErrInvalid
 	}
 
 	values := url.Values{
-		"method": {"getVulnDetailInfo"},
-		"feed":   {"hnd"},
-		"lang":   {"ja"},
-		"vulnId": {strings.Join(vulnID, "+")},
+		"method":       {"getVulnDetailInfo"},
+		"feed":         {"hnd"},
+		"lang":         {"ja"},
+		"startItem":    {"1"},
+		"maxCountItem": {strconv.Itoa(len(vulnID))},
+		"vulnId":       {strings.Join(vulnID, "+")},
 	}
 	return api.client.Request(values)
 }
 
 //VulnDetailInfo calls a MyJVN RESTful API: "getVulnDetailInfo", and returns VULDEF value
-func (api *APIs) VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
+func (api *APIs) VulnDetailInfo(vulnID []string) (*vuldef.VULDEF, error) {
 	data, err := api.VulnDetailInfoXML(vulnID)
 	if err != nil {
 		return nil, err
@@ -75,7 +82,7 @@ func (api *APIs) VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
 	if stat.Status.ReturnCode != 0 {
 		return nil, fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
 	}
-	return rss.Unmarshal(data)
+	return vuldef.Unmarshal(data)
 }
 
 /* Copyright 2018 Spiegel

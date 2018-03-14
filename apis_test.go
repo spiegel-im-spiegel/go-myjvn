@@ -2,17 +2,19 @@ package myjvn
 
 import (
 	"testing"
+
+	"github.com/spiegel-im-spiegel/go-myjvn/option"
 )
 
 func TestVulnOverviewListXml(t *testing.T) {
-	_, err := New().VulnOverviewListXML()
+	_, err := New().VulnOverviewListXML(option.New())
 	if err != nil {
 		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
 	}
 }
 
 func TestVulnOverviewList(t *testing.T) {
-	_, err := New().VulnOverviewList()
+	_, err := New().VulnOverviewList(option.New())
 	if err != nil {
 		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
 	}
