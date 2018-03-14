@@ -1,7 +1,7 @@
 package myjvn
 
 import (
-	"errors"
+	"fmt"
 	"net/url"
 	"os"
 	"strings"
@@ -11,19 +11,29 @@ import (
 	"github.com/spiegel-im-spiegel/go-myjvn/status"
 )
 
+//APIs implements MyJVN RESTful API
+type APIs struct {
+	client request.Client
+}
+
+//New creates APIs instance
+func New() *APIs {
+	return &APIs{client: request.New()}
+}
+
 //VulnOverviewListXML calls a MyJVN RESTful API: "getVulnOverviewList", and returns XML data
-func VulnOverviewListXML() ([]byte, error) {
+func (api *APIs) VulnOverviewListXML() ([]byte, error) {
 	values := url.Values{
 		"method": {"getVulnOverviewList"},
 		"feed":   {"hnd"},
 		"lang":   {"ja"},
 	}
-	return request.API(values)
+	return api.client.Request(values)
 }
 
 //VulnOverviewList calls a MyJVN RESTful API: "getVulnOverviewList", and returns JVNRSS value
-func VulnOverviewList() (*rss.JVNRSS, error) {
-	data, err := VulnOverviewListXML()
+func (api *APIs) VulnOverviewList() (*rss.JVNRSS, error) {
+	data, err := api.VulnOverviewListXML()
 	if err != nil {
 		return nil, err
 	}
@@ -32,13 +42,13 @@ func VulnOverviewList() (*rss.JVNRSS, error) {
 		return nil, err
 	}
 	if stat.Status.ReturnCode != 0 {
-		return nil, errors.New(stat.Status.ErrorMsg)
+		return nil, fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
 	}
 	return rss.Unmarshal(data)
 }
 
 //VulnDetailInfoXML calls a MyJVN RESTful API: "getVulnDetailInfo", and returns XML data
-func VulnDetailInfoXML(vulnID []string) ([]byte, error) {
+func (api *APIs) VulnDetailInfoXML(vulnID []string) ([]byte, error) {
 	if len(vulnID) == 0 {
 		return nil, os.ErrInvalid
 	}
@@ -49,12 +59,12 @@ func VulnDetailInfoXML(vulnID []string) ([]byte, error) {
 		"lang":   {"ja"},
 		"vulnId": {strings.Join(vulnID, "+")},
 	}
-	return request.API(values)
+	return api.client.Request(values)
 }
 
 //VulnDetailInfo calls a MyJVN RESTful API: "getVulnDetailInfo", and returns VULDEF value
-func VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
-	data, err := VulnDetailInfoXML(vulnID)
+func (api *APIs) VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
+	data, err := api.VulnDetailInfoXML(vulnID)
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +73,7 @@ func VulnDetailInfo(vulnID []string) (*rss.JVNRSS, error) {
 		return nil, err
 	}
 	if stat.Status.ReturnCode != 0 {
-		return nil, errors.New(stat.Status.ErrorMsg)
+		return nil, fmt.Errorf("Code %s: %s", stat.Status.ErrorCode, stat.Status.ErrorMsg)
 	}
 	return rss.Unmarshal(data)
 }

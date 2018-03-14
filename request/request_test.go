@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func TestApi(t *testing.T) {
+func TestRequest(t *testing.T) {
 	values := url.Values{
 		"method": {"getVulnOverviewList"},
 		"feed":   {"hnd"},
 		"lang":   {"ja"},
 	}
-	_, err := API(values)
+	_, err := New().Request(values)
 	if err != nil {
-		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
+		t.Errorf("Request() = \"%v\", want nil.", err)
 	}
 }
 

@@ -1,28 +1,52 @@
 package request
 
 import (
+	"errors"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 )
 
-const (
-	pathMyJVN = "https://jvndb.jvn.jp/myjvn" //path for MyJVN RESTful API
-)
+//Client is structural subtype for MyJVN API Client
+type Client interface {
+	Request(url.Values) ([]byte, error)
+}
 
-//API calls a MyJVN RESTful API.
-func API(v url.Values) ([]byte, error) {
-	resp, err := new(http.Client).Get(pathMyJVN + "?" + v.Encode())
+//MyJVNClient is http.Client for MyJVN RESTful API
+type MyJVNClient struct {
+	client *http.Client
+	path   string
+}
+
+//New creates MyJVNClient instance
+func New() Client {
+	return &MyJVNClient{client: &http.Client{}, path: "https://jvndb.jvn.jp/myjvn"}
+}
+
+//Request calls a MyJVN RESTful API.
+func (c *MyJVNClient) Request(v url.Values) ([]byte, error) {
+	resp, err := c.client.Get(c.path + "?" + v.Encode())
 	if err != nil {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if err = checkStatus(resp); err != nil {
+		return nil, err
+	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return nil, err
 	}
 	return body, nil
+}
+
+func checkStatus(resp *http.Response) error {
+	if !(resp.StatusCode != 0 && resp.StatusCode < http.StatusBadRequest) {
+		return errors.New(resp.Status)
+	}
+	return nil
 }
 
 /* Copyright 2018 Spiegel

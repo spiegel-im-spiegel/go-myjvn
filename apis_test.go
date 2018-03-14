@@ -5,14 +5,14 @@ import (
 )
 
 func TestVulnOverviewListXml(t *testing.T) {
-	_, err := VulnOverviewListXML()
+	_, err := New().VulnOverviewListXML()
 	if err != nil {
 		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
 	}
 }
 
 func TestVulnOverviewList(t *testing.T) {
-	_, err := VulnOverviewList()
+	_, err := New().VulnOverviewList()
 	if err != nil {
 		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
 	}
@@ -20,7 +20,7 @@ func TestVulnOverviewList(t *testing.T) {
 
 func TestVulnDetailInfoXML(t *testing.T) {
 	vulnID := []string{"JVNDB-2018-000022", "JVNDB-2018-000024"}
-	_, err := VulnDetailInfoXML(vulnID)
+	_, err := New().VulnDetailInfoXML(vulnID)
 	if err != nil {
 		t.Errorf("VulnOverviewListXml() = \"%v\", want nil.", err)
 	}
@@ -28,7 +28,7 @@ func TestVulnDetailInfoXML(t *testing.T) {
 
 func TestVulnDetailInfo(t *testing.T) {
 	vulnID := []string{"JVNDB-2018-000022", "JVNDB-2018-000024"}
-	_, err := VulnDetailInfo(vulnID)
+	_, err := New().VulnDetailInfo(vulnID)
 	if err != nil {
 		t.Errorf("VulnOverviewList() = \"%v\", want nil.", err)
 	}
