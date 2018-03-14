@@ -3,6 +3,8 @@ package vuldef
 import (
 	"encoding/json"
 	"encoding/xml"
+	"sort"
+	"strings"
 
 	"github.com/spiegel-im-spiegel/go-myjvn/values"
 )
@@ -69,6 +71,28 @@ func (vuln *VULDEF) JSON(indent string) ([]byte, error) {
 		return json.MarshalIndent(vuln, "", indent)
 	}
 	return json.Marshal(vuln)
+}
+
+//Append appends Vulinfo data
+func (vuln *VULDEF) Append(appnd *VULDEF) {
+	if vuln == nil || appnd == nil {
+		return
+	}
+	if len(appnd.Vulinfo) == 0 {
+		return
+	}
+	vuln.Vulinfo = append(vuln.Vulinfo, appnd.Vulinfo...)
+}
+
+//Sort sorts Vulinfo data
+func (vuln *VULDEF) SortByID(reverseFlag bool) {
+	sort.Slice(vuln.Vulinfo, func(i int, j int) bool {
+		if reverseFlag {
+			return strings.Compare(vuln.Vulinfo[i].VulinfoID, vuln.Vulinfo[j].VulinfoID) > 0
+		} else {
+			return strings.Compare(vuln.Vulinfo[i].VulinfoID, vuln.Vulinfo[j].VulinfoID) < 0
+		}
+	})
 }
 
 /* Copyright 2018 Spiegel
