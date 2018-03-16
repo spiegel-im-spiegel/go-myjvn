@@ -94,8 +94,6 @@ func run(start, end time.Time) {
 			fmt.Fprintln(os.Stderr, err)
 			return
 		}
-		fmt.Fprintln(os.Stderr, maxItem)
-		fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
 		fmt.Println(string(json))
 	} else {
 		fmt.Fprintln(os.Stderr, "no data")

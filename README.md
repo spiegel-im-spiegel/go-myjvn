@@ -14,7 +14,7 @@
 
 ## サンプルコード
 
-“[`go-myjvn/cli/vulnlist/main.go`](https://github.com/spiegel-im-spiegel/go-myjvn/blob/master/cli/vulnlist/main.go "")” を参照のこと。
+[`go-myjvn/cli/vulnlist/main.go`](https://github.com/spiegel-im-spiegel/go-myjvn/blob/master/cli/vulnlist/main.go "") を参照のこと。
 
 ## 参考
 
