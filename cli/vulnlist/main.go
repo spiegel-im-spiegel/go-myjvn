@@ -16,46 +16,57 @@ func run(start, end time.Time) {
 	api := myjvn.New()
 
 	startItem := 1
-	var vulnInfo *vuldef.VULDEF = nil
+	maxItem := 0
+	vulnInfo := (*vuldef.VULDEF)(nil)
 	for {
 		opt := option.New(
 			option.WithRangeDate(start, end),
 			option.WithStartItem(startItem),
-			option.WithSeverity(option.SeverityHigh),
+			//option.WithSeverity(option.SeverityHigh),
 		)
-		xml, err := api.VulnOverviewListXML(opt)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-		stat, err := status.Unmarshal(xml)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-		if err := stat.GetError(); err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
-		}
-		maxItem := stat.Status.TotalRes
-		if maxItem == 0 {
-			fmt.Fprintln(os.Stderr, "no data")
-			return
-		}
-		rss, err := rss.Unmarshal(xml)
-		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			return
+		var rssData *rss.JVNRSS
+		if startItem == 1 {
+			xml, err := api.VulnOverviewListXML(opt)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return
+			}
+			stat, err := status.Unmarshal(xml)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return
+			}
+			if err := stat.GetError(); err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return
+			}
+			maxItem = stat.Status.TotalRes
+			if maxItem == 0 {
+				fmt.Fprintln(os.Stderr, "no data")
+				return
+			}
+			rssData, err = rss.Unmarshal(xml)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return
+			}
+		} else {
+			var err error
+			rssData, err = api.VulnOverviewList(opt)
+			if err != nil {
+				fmt.Fprintln(os.Stderr, err)
+				return
+			}
 		}
 		index := 0
-		size := len(rss.Items)
+		size := len(rssData.Items)
 		for {
 			ids := []string{}
 			for i := 0; i < vuldef.MaxItems; i++ {
 				if (index + i) >= size {
 					break
 				}
-				ids = append(ids, rss.Items[index+i].Identifier)
+				ids = append(ids, rssData.Items[index+i].Identifier)
 			}
 			vuln, err := api.VulnDetailInfo(ids)
 			if err != nil {
@@ -72,19 +83,19 @@ func run(start, end time.Time) {
 				break
 			}
 		}
-		next := stat.Status.FirstRes + size
-		if next > maxItem {
+		startItem += index
+		if startItem > maxItem {
 			break
 		}
-		startItem = next
 	}
 	if vulnInfo != nil {
-		json, err := vulnInfo.JSON("  ")
+		json, err := vulnInfo.JSON("")
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)
 			return
 		}
-		//fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
+		fmt.Fprintln(os.Stderr, maxItem)
+		fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
 		fmt.Println(string(json))
 	} else {
 		fmt.Fprintln(os.Stderr, "no data")
