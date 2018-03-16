@@ -24,7 +24,7 @@ func TestAddQuery(t *testing.T) {
 		opt := New(
 			WithStartItem(tc.startItem),
 			WithRangeDate(tc.start, tc.end),
-			WithRangeMode(tc.mode),
+			WithRangeMode(tc.mode), //ignore
 			WithSeverity(tc.se),
 		)
 		query := url.Values{}
@@ -52,6 +52,7 @@ func TestAddQuery2(t *testing.T) {
 		opt := New(
 			WithStartItem(tc.startItem),
 			WithRangeMode(tc.mode),
+			WithRangeMode(NoRange), //ignore
 			WithSeverity(tc.se),
 		)
 		query := url.Values{}

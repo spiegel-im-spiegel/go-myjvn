@@ -41,11 +41,9 @@ func WithRangeMode(mode RangeMode) OptFunc {
 		if o.rangeDate == NoRange {
 			return
 		}
-		if mode == RangeMonth {
+		if mode == RangeMonth || mode == RangeWeek {
 			o.rangeDate = mode
-			return
 		}
-		o.rangeDate = RangeWeek
 	}
 }
 

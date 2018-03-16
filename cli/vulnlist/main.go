@@ -16,7 +16,7 @@ func run(start, end time.Time) {
 	api := myjvn.New()
 
 	startItem := 1
-	vulnInfo := (*vuldef.VULDEF)(nil)
+	var vulnInfo *vuldef.VULDEF = nil
 	for {
 		opt := option.New(
 			option.WithRangeDate(start, end),
@@ -86,6 +86,8 @@ func run(start, end time.Time) {
 		}
 		//fmt.Fprintln(os.Stderr, len(vulnInfo.Vulinfo))
 		fmt.Println(string(json))
+	} else {
+		fmt.Fprintln(os.Stderr, "no data")
 	}
 }
 
