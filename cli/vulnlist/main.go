@@ -20,7 +20,9 @@ func run(start, end time.Time) {
 	vulnInfo := (*vuldef.VULDEF)(nil)
 	for {
 		opt := option.New(
-			option.WithRangeDate(start, end),
+			option.WithRangeDatePublicMode(option.NoRange),
+			option.WithRangeDatePublishedPeriod(start, end),
+			option.WithRangeDateFirstPublishedMode(option.NoRange),
 			option.WithStartItem(startItem),
 			//option.WithSeverity(option.SeverityHigh),
 		)

@@ -36,7 +36,7 @@ type JVNRSS struct {
 			Source string `xml:"source,attr,omitempty" json:"source,omitempty"`
 			Value  string `xml:",chardata" json:"value"`
 		} `xml:"references" json:"references"`
-		Cpe struct {
+		Cpe []struct {
 			Version string `xml:"version,attr" json:"version"`
 			Vendor  string `xml:"vendor,attr" json:"vendor"`
 			Product string `xml:"product,attr" json:"product"`
