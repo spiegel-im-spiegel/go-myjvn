@@ -26,6 +26,8 @@ func (p *Period) SetMode(mode RangeMode) {
 		p.mode = mode
 	default:
 	}
+	p.start = time.Time{}
+	p.end = time.Time{}
 }
 
 //SetPeriod sets modo to NoRange and sets period
