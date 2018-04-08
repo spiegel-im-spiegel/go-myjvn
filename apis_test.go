@@ -3,7 +3,7 @@ package myjvn
 import (
 	"testing"
 
-	"github.com/spiegel-im-spiegel/go-myjvn/option"
+	"github.com/spiegel-im-spiegel/go-myjvn/rss/option"
 )
 
 func TestVulnOverviewListXml(t *testing.T) {
