@@ -1,6 +1,9 @@
 package base
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestDecodeError(t *testing.T) {
 	testCases := []struct {
@@ -102,6 +105,18 @@ func TestScore(t *testing.T) {
 			t.Errorf("Score(%s) = %v, want %v.", tc.vector, severity, tc.severity)
 		}
 	}
+}
+
+func ExampleMetrics() {
+	m, err := Decode("CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N") //CVE-2015-8252
+	if err != nil {
+		return
+	}
+	fmt.Println("Score =", m.Score())
+	fmt.Println("Severity =", m.GetSeverity())
+	//Output
+	//Score = 7.5
+	//Severity = High
 }
 
 /* Copyright 2018 Spiegel
