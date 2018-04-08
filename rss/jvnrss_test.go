@@ -150,12 +150,14 @@ xml:lang="ja">
           "value": "https://jvndb.jvn.jp/ja/cwe/CWE-78.html"
         }
       ],
-      "cpe": {
-        "version": "2.2",
-        "vendor": "株式会社コレガ",
-        "product": "CG-WGR1200",
-        "value": "cpe:/h:corega:cg-wgr1200"
-      },
+      "cpe": [
+        {
+          "version": "2.2",
+          "vendor": "株式会社コレガ",
+          "product": "CG-WGR1200",
+          "value": "cpe:/h:corega:cg-wgr1200"
+        }
+      ],
       "cvss": [
         {
           "version": "3.0",
@@ -199,12 +201,14 @@ xml:lang="ja">
           "value": "https://jvndb.jvn.jp/ja/cwe/CWE-79.html"
         }
       ],
-      "cpe": {
-        "version": "2.2",
-        "vendor": "Soflyy",
-        "product": "WP All Import",
-        "value": "cpe:/a:misc:soflyy_wp_all_import"
-      },
+      "cpe": [
+        {
+          "version": "2.2",
+          "vendor": "Soflyy",
+          "product": "WP All Import",
+          "value": "cpe:/a:misc:soflyy_wp_all_import"
+        }
+      ],
       "cvss": [
         {
           "version": "3.0",
@@ -248,12 +252,14 @@ xml:lang="ja">
           "value": "https://jvndb.jvn.jp/ja/cwe/CWE-79.html"
         }
       ],
-      "cpe": {
-        "version": "2.2",
-        "vendor": "Soflyy",
-        "product": "WP All Import",
-        "value": "cpe:/a:misc:soflyy_wp_all_import"
-      },
+      "cpe": [
+        {
+          "version": "2.2",
+          "vendor": "Soflyy",
+          "product": "WP All Import",
+          "value": "cpe:/a:misc:soflyy_wp_all_import"
+        }
+      ],
       "cvss": [
         {
           "version": "3.0",

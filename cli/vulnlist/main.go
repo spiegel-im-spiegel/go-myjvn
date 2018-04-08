@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"sort"
 	"time"
 
 	"github.com/spiegel-im-spiegel/go-myjvn"
@@ -20,7 +21,9 @@ func run(start, end time.Time) {
 	vulnInfo := (*vuldef.VULDEF)(nil)
 	for {
 		opt := option.New(
-			option.WithRangeDate(start, end),
+			option.WithRangeDatePublicMode(option.NoRange),
+			option.WithRangeDatePublishedPeriod(start, end),
+			option.WithRangeDateFirstPublishedMode(option.NoRange),
 			option.WithStartItem(startItem),
 			//option.WithSeverity(option.SeverityHigh),
 		)
@@ -89,6 +92,11 @@ func run(start, end time.Time) {
 		}
 	}
 	if vulnInfo != nil {
+		//sort by DateLastUpdated
+		sort.Slice(vulnInfo.Vulinfo, func(i int, j int) bool {
+			return vulnInfo.Vulinfo[i].VulinfoData.DateLastUpdated.Before(vulnInfo.Vulinfo[j].VulinfoData.DateLastUpdated.Time)
+		})
+		//encode to JSON
 		json, err := vulnInfo.JSON("")
 		if err != nil {
 			fmt.Fprintln(os.Stderr, err)

@@ -8,11 +8,11 @@ import (
 
 //Option is option data for "getVulnOverviewList" API
 type Option struct {
-	severity  Severity  //filter condition
-	rangeDate RangeMode //range mode
-	dateStart time.Time //start date for search (should rangeDate == NoRange)
-	dateEnd   time.Time //end date for search (should rangeDate == NoRange)
-	startItem int       //start point for entries
+	severity                Severity //filter condition
+	rangeDatePublic         *Period  //range mode for public date
+	rangeDatePublished      *Period  //range mode for published date
+	rangeDateFirstPublished *Period  //range mode for first published date
+	startItem               int      //start point for entries
 }
 
 //OptFunc is self-referential function for functional options pattern
@@ -20,8 +20,7 @@ type OptFunc func(*Option)
 
 // New returns a new Option instance
 func New(opts ...OptFunc) *Option {
-	now := time.Now()
-	o := &Option{severity: SeverityNone, rangeDate: RangeWeek, dateStart: now, dateEnd: now, startItem: 1}
+	o := &Option{severity: SeverityNone, rangeDatePublic: NewPeriod(), rangeDatePublished: NewPeriod(), rangeDateFirstPublished: NewPeriod(), startItem: 1}
 	for _, opt := range opts {
 		opt(o)
 	}
@@ -35,27 +34,45 @@ func WithStartItem(start int) OptFunc {
 	}
 }
 
-//WithRangeMode returns function for setting rangeDate
-func WithRangeMode(mode RangeMode) OptFunc {
+//WithRangeDatePublicMode returns function for setting rangeDatePublic
+func WithRangeDatePublicMode(mode RangeMode) OptFunc {
 	return func(o *Option) {
-		if o.rangeDate == NoRange {
-			return
-		}
-		if mode == RangeMonth || mode == RangeWeek {
-			o.rangeDate = mode
-		}
+		o.rangeDatePublic.SetMode(mode)
 	}
 }
 
-//WithRangeDate returns function for setting rangeDate
-func WithRangeDate(start, end time.Time) OptFunc {
-	if start.After(end) {
-		start, end = end, start
-	}
+//WithRangeDatePublicPeriod returns function for setting rangeDatePublic
+func WithRangeDatePublicPeriod(start, end time.Time) OptFunc {
 	return func(o *Option) {
-		o.dateStart = start
-		o.dateEnd = end
-		o.rangeDate = NoRange
+		o.rangeDatePublic.SetPeriod(start, end)
+	}
+}
+
+//WithRangeDatePublishedMode returns function for setting rangeDatePublished
+func WithRangeDatePublishedMode(mode RangeMode) OptFunc {
+	return func(o *Option) {
+		o.rangeDatePublished.SetMode(mode)
+	}
+}
+
+//WithRangeDatePublishedPeriod returns function for setting rangeDatePublished
+func WithRangeDatePublishedPeriod(start, end time.Time) OptFunc {
+	return func(o *Option) {
+		o.rangeDatePublished.SetPeriod(start, end)
+	}
+}
+
+//WithRangeDateFirstPublishedMode returns function for setting rangeDateFirstPublished
+func WithRangeDateFirstPublishedMode(mode RangeMode) OptFunc {
+	return func(o *Option) {
+		o.rangeDateFirstPublished.SetMode(mode)
+	}
+}
+
+//WithRangeDateFirstPublishedPeriod returns function for setting rangeDateFirstPublished
+func WithRangeDateFirstPublishedPeriod(start, end time.Time) OptFunc {
+	return func(o *Option) {
+		o.rangeDateFirstPublished.SetPeriod(start, end)
 	}
 }
 
@@ -72,32 +89,38 @@ func (o Option) AddQuery(query url.Values) {
 	if o.severity != SeverityNone {
 		query.Add("severity", o.severity.String())
 	}
-	if o.rangeDate == NoRange {
+	if o.rangeDatePublic.IsPeriodSSet() {
 		query.Add("rangeDatePublic", NoRange.String())
-		query.Add("datePublicStartY", strconv.Itoa(o.dateStart.Year()))
-		query.Add("datePublicStartM", strconv.Itoa(int(o.dateStart.Month())))
-		query.Add("datePublicStartD", strconv.Itoa(o.dateStart.Day()))
-		query.Add("datePublicEndY", strconv.Itoa(o.dateEnd.Year()))
-		query.Add("datePublicEndM", strconv.Itoa(int(o.dateEnd.Month())))
-		query.Add("datePublicEndD", strconv.Itoa(o.dateEnd.Day()))
-		query.Add("rangeDatePublished", NoRange.String())
-		query.Add("datePublishedStartY", strconv.Itoa(o.dateStart.Year()))
-		query.Add("datePublishedStartM", strconv.Itoa(int(o.dateStart.Month())))
-		query.Add("datePublishedStartD", strconv.Itoa(o.dateStart.Day()))
-		query.Add("datePublishedEndY", strconv.Itoa(o.dateEnd.Year()))
-		query.Add("datePublishedEndM", strconv.Itoa(int(o.dateEnd.Month())))
-		query.Add("datePublishedEndD", strconv.Itoa(o.dateEnd.Day()))
-		query.Add("rangeDateFirstPublished", NoRange.String())
-		query.Add("dateFirstPublishedStartY", strconv.Itoa(o.dateStart.Year()))
-		query.Add("dateFirstPublishedStartM", strconv.Itoa(int(o.dateStart.Month())))
-		query.Add("dateFirstPublishedStartD", strconv.Itoa(o.dateStart.Day()))
-		query.Add("dateFirstPublishedEndY", strconv.Itoa(o.dateEnd.Year()))
-		query.Add("dateFirstPublishedEndM", strconv.Itoa(int(o.dateEnd.Month())))
-		query.Add("dateFirstPublishedEndD", strconv.Itoa(o.dateEnd.Day()))
+		query.Add("datePublicStartY", strconv.Itoa(o.rangeDatePublic.start.Year()))
+		query.Add("datePublicStartM", strconv.Itoa(int(o.rangeDatePublic.start.Month())))
+		query.Add("datePublicStartD", strconv.Itoa(o.rangeDatePublic.start.Day()))
+		query.Add("datePublicEndY", strconv.Itoa(o.rangeDatePublic.end.Year()))
+		query.Add("datePublicEndM", strconv.Itoa(int(o.rangeDatePublic.end.Month())))
+		query.Add("datePublicEndD", strconv.Itoa(o.rangeDatePublic.end.Day()))
 	} else {
-		query.Add("rangeDatePublic", o.rangeDate.String())
-		query.Add("rangeDatePublished", o.rangeDate.String())
-		query.Add("rangeDateFirstPublished", o.rangeDate.String())
+		query.Add("rangeDatePublic", o.rangeDatePublic.mode.String())
+	}
+	if o.rangeDatePublished.IsPeriodSSet() {
+		query.Add("rangeDatePublished", NoRange.String())
+		query.Add("datePublishedStartY", strconv.Itoa(o.rangeDatePublished.start.Year()))
+		query.Add("datePublishedStartM", strconv.Itoa(int(o.rangeDatePublished.start.Month())))
+		query.Add("datePublishedStartD", strconv.Itoa(o.rangeDatePublished.start.Day()))
+		query.Add("datePublishedEndY", strconv.Itoa(o.rangeDatePublished.end.Year()))
+		query.Add("datePublishedEndM", strconv.Itoa(int(o.rangeDatePublished.end.Month())))
+		query.Add("datePublishedEndD", strconv.Itoa(o.rangeDatePublished.end.Day()))
+	} else {
+		query.Add("rangeDatePublished", o.rangeDatePublished.mode.String())
+	}
+	if o.rangeDateFirstPublished.IsPeriodSSet() {
+		query.Add("rangeDateFirstPublished", NoRange.String())
+		query.Add("dateFirstPublishedStartY", strconv.Itoa(o.rangeDateFirstPublished.start.Year()))
+		query.Add("dateFirstPublishedStartM", strconv.Itoa(int(o.rangeDateFirstPublished.start.Month())))
+		query.Add("dateFirstPublishedStartD", strconv.Itoa(o.rangeDateFirstPublished.start.Day()))
+		query.Add("dateFirstPublishedEndY", strconv.Itoa(o.rangeDateFirstPublished.end.Year()))
+		query.Add("dateFirstPublishedEndM", strconv.Itoa(int(o.rangeDateFirstPublished.end.Month())))
+		query.Add("dateFirstPublishedEndD", strconv.Itoa(o.rangeDateFirstPublished.end.Day()))
+	} else {
+		query.Add("rangeDateFirstPublished", o.rangeDateFirstPublished.mode.String())
 	}
 }
 

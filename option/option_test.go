@@ -23,8 +23,12 @@ func TestAddQuery(t *testing.T) {
 	for _, tc := range testCases {
 		opt := New(
 			WithStartItem(tc.startItem),
-			WithRangeDate(tc.start, tc.end),
-			WithRangeMode(tc.mode), //ignore
+			WithRangeDatePublicPeriod(tc.start, tc.end),
+			WithRangeDatePublishedPeriod(tc.start, tc.end),
+			WithRangeDateFirstPublishedPeriod(tc.start, tc.end),
+			WithRangeDatePublicMode(RangeWeek),         // ignore
+			WithRangeDatePublishedMode(RangeWeek),      // ignore
+			WithRangeDateFirstPublishedMode(RangeWeek), // ignore
 			WithSeverity(tc.se),
 		)
 		query := url.Values{}
@@ -45,14 +49,15 @@ func TestAddQuery2(t *testing.T) {
 	}{
 		{mode: RangeWeek, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=w&rangeDatePublic=w&rangeDatePublished=w&severity=h&startItem=1"},
 		{mode: RangeMonth, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=m&rangeDatePublic=m&rangeDatePublished=m&severity=h&startItem=1"},
-		{mode: NoRange, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=w&rangeDatePublic=w&rangeDatePublished=w&severity=h&startItem=1"},
+		{mode: NoRange, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=n&rangeDatePublic=n&rangeDatePublished=n&severity=h&startItem=1"},
 	}
 
 	for _, tc := range testCases {
 		opt := New(
 			WithStartItem(tc.startItem),
-			WithRangeMode(tc.mode),
-			WithRangeMode(NoRange), //ignore
+			WithRangeDatePublicMode(tc.mode),
+			WithRangeDatePublishedMode(tc.mode),
+			WithRangeDateFirstPublishedMode(tc.mode),
 			WithSeverity(tc.se),
 		)
 		query := url.Values{}
