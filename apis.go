@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/spiegel-im-spiegel/go-myjvn/option"
 	"github.com/spiegel-im-spiegel/go-myjvn/request"
 	"github.com/spiegel-im-spiegel/go-myjvn/rss"
+	"github.com/spiegel-im-spiegel/go-myjvn/rss/option"
 	"github.com/spiegel-im-spiegel/go-myjvn/status"
 	"github.com/spiegel-im-spiegel/go-myjvn/vuldef"
 )
