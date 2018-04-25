@@ -69,6 +69,17 @@ func (rss *JVNRSS) JSON(indent string) ([]byte, error) {
 	return json.Marshal(rss)
 }
 
+//Append appends Items data
+func (rss *JVNRSS) Append(appnd *JVNRSS) {
+	if rss == nil || appnd == nil {
+		return
+	}
+	if len(appnd.Items) == 0 {
+		return
+	}
+	rss.Items = append(rss.Items, appnd.Items...)
+}
+
 /* Copyright 2018 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");

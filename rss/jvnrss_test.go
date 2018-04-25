@@ -5,7 +5,7 @@ import (
 )
 
 func TestUnmarshal(t *testing.T) {
-	data := `
+	data1 := `
 <?xml version="1.0" encoding="UTF-8" ?>
 <rdf:RDF
 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -36,7 +36,6 @@ xml:lang="ja">
         <rdf:Seq>
           <rdf:li rdf:resource="https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000024.html"/>
           <rdf:li rdf:resource="https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000023.html"/>
-          <rdf:li rdf:resource="https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000022.html"/>
         </rdf:Seq>
       </items>
     </channel>
@@ -76,6 +75,42 @@ xml:lang="ja">
       <dcterms:issued>2018-03-08T12:04:53+09:00</dcterms:issued>
       <dcterms:modified>2018-03-08T12:04:53+09:00</dcterms:modified>
     </item>
+    <status:Status version="3.3" method="getVulnOverviewList" lang="ja" retCd="0" retMax="50" errCd="" errMsg="" totalRes="2" totalResRet="2" firstRes="1" feed="hnd"/>
+  </rdf:RDF>
+`
+	data2 := `
+<?xml version="1.0" encoding="UTF-8" ?>
+<rdf:RDF
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xmlns="http://purl.org/rss/1.0/"
+xmlns:rss="http://purl.org/rss/1.0/"
+xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+xmlns:dc="http://purl.org/dc/elements/1.1/"
+xmlns:dcterms="http://purl.org/dc/terms/"
+xmlns:sec="http://jvn.jp/rss/mod_sec/3.0/"
+xmlns:marking="http://data-marking.mitre.org/Marking-1"
+xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
+xmlns:status="http://jvndb.jvn.jp/myjvn/Status"
+xsi:schemaLocation="http://purl.org/rss/1.0/ https://jvndb.jvn.jp/schema/jvnrss_3.2.xsd http://jvndb.jvn.jp/myjvn/Status https://jvndb.jvn.jp/schema/status_3.3.xsd"
+xml:lang="ja">
+    <channel rdf:about="https://jvndb.jvn.jp/apis/myjvn">
+      <title>JVNDB　脆弱性対策情報</title>
+      <link>https://jvndb.jvn.jp/apis/myjvn</link>
+      <description>JVNDB　脆弱性対策情報</description>
+      <dc:date>2018-03-13T11:57:52+09:00</dc:date>
+      <dcterms:issued/>
+      <dcterms:modified>2018-03-13T11:57:52+09:00</dcterms:modified>
+      <sec:handling>
+        <marking:Marking>
+          <marking:Marking_Structure xsi:type="tlpMarking:TLPMarkingStructureType" marking_model_name="TLP" marking_model_ref="http://www.us-cert.gov/tlp/" color="WHITE"/>
+        </marking:Marking>
+      </sec:handling>
+      <items>
+        <rdf:Seq>
+          <rdf:li rdf:resource="https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000022.html"/>
+        </rdf:Seq>
+      </items>
+    </channel>
     <item rdf:about="https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000022.html">
       <title>WordPress 用プラグイン WP All Import におけるクロスサイトスクリプティングの脆弱性</title>
       <link>https://jvndb.jvn.jp/ja/contents/2018/JVNDB-2018-000022.html</link>
@@ -92,7 +127,7 @@ xml:lang="ja">
       <dcterms:issued>2018-03-08T12:02:28+09:00</dcterms:issued>
       <dcterms:modified>2018-03-08T12:02:28+09:00</dcterms:modified>
     </item>
-    <status:Status version="3.3" method="getVulnOverviewList" lang="ja" retCd="0" retMax="50" errCd="" errMsg="" totalRes="3" totalResRet="3" firstRes="1" feed="hnd"/>
+    <status:Status version="3.3" method="getVulnOverviewList" lang="ja" retCd="0" retMax="50" errCd="" errMsg="" totalRes="1" totalResRet="1" firstRes="1" feed="hnd"/>
   </rdf:RDF>
 `
 	res := `{
@@ -279,10 +314,15 @@ xml:lang="ja">
     }
   ]
 }`
-	rss, err := Unmarshal([]byte(data))
-	if err != nil {
-		t.Errorf("Unmarshal() = \"%v\", want nil.", err)
+	rss, err1 := Unmarshal([]byte(data1))
+	if err1 != nil {
+		t.Errorf("Unmarshal() = \"%v\", want nil.", err1)
 	}
+	rss2, err2 := Unmarshal([]byte(data2))
+	if err2 != nil {
+		t.Errorf("Unmarshal() = \"%v\", want nil.", err2)
+	}
+	rss.Append(rss2)
 	json, err := rss.JSON("  ")
 	if err != nil {
 		t.Errorf("JSON() = \"%v\", want nil.", err)
