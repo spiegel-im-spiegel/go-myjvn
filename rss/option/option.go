@@ -83,6 +83,14 @@ func WithSeverity(se Severity) OptFunc {
 	}
 }
 
+//SetStart sets start item number
+func (o *Option) SetStart(start int) {
+	if o == nil {
+		return
+	}
+	o.startItem = start
+}
+
 //AddQuery makes query of URL
 func (o Option) AddQuery(query url.Values) {
 	query.Add("startItem", strconv.Itoa(o.startItem))
