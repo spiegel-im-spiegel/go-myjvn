@@ -2,12 +2,13 @@
 
 [![Build Status](https://travis-ci.org/spiegel-im-spiegel/go-myjvn.svg?branch=master)](https://travis-ci.org/spiegel-im-spiegel/go-myjvn)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/spiegel-im-spiegel/go-myjvn/master/LICENSE)
+[![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/go-myjvn.svg)](https://github.com/spiegel-im-spiegel/go-myjvn/releases/latest)
 
 本パッケージは [JVN] が提供する「[脆弱性対策情報共有フレームワーク]」のひとつである [MyJVN API] を [Go 言語]でハンドリングするためのラッパークラスです。
 今のところ，以下の API をサポートしています。
 
 - [脆弱性対策概要情報一覧の取得（getVulnOverviewList）](https://jvndb.jvn.jp/apis/getVulnOverviewList_api_hnd.html "MyJVN - API: getVulnOverviewList")
-    - 期間および深刻度によるフィルタリングをサポート
+    - 期間，深刻度，キーワードによるフィルタリングをサポート
     - 日本語のみサポート
 - [脆弱性対策詳細情報の取得（getVulnDetailInfo）](https://jvndb.jvn.jp/apis/getVulnDetailInfo_api_hnd.html "MyJVN - API: getVulnDetailInfo")
     - 日本語のみサポート

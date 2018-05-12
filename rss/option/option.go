@@ -13,6 +13,7 @@ type Option struct {
 	rangeDatePublished      *Period  //range mode for published date
 	rangeDateFirstPublished *Period  //range mode for first published date
 	startItem               int      //start point for entries
+	keyword                 string   //filter condition
 }
 
 //OptFunc is self-referential function for functional options pattern
@@ -30,65 +31,136 @@ func New(opts ...OptFunc) *Option {
 //WithStartItem returns function for setting startItem
 func WithStartItem(start int) OptFunc {
 	return func(o *Option) {
-		o.startItem = start
-	}
-}
-
-//WithRangeDatePublicMode returns function for setting rangeDatePublic
-func WithRangeDatePublicMode(mode RangeMode) OptFunc {
-	return func(o *Option) {
-		o.rangeDatePublic.SetMode(mode)
-	}
-}
-
-//WithRangeDatePublicPeriod returns function for setting rangeDatePublic
-func WithRangeDatePublicPeriod(start, end time.Time) OptFunc {
-	return func(o *Option) {
-		o.rangeDatePublic.SetPeriod(start, end)
-	}
-}
-
-//WithRangeDatePublishedMode returns function for setting rangeDatePublished
-func WithRangeDatePublishedMode(mode RangeMode) OptFunc {
-	return func(o *Option) {
-		o.rangeDatePublished.SetMode(mode)
-	}
-}
-
-//WithRangeDatePublishedPeriod returns function for setting rangeDatePublished
-func WithRangeDatePublishedPeriod(start, end time.Time) OptFunc {
-	return func(o *Option) {
-		o.rangeDatePublished.SetPeriod(start, end)
-	}
-}
-
-//WithRangeDateFirstPublishedMode returns function for setting rangeDateFirstPublished
-func WithRangeDateFirstPublishedMode(mode RangeMode) OptFunc {
-	return func(o *Option) {
-		o.rangeDateFirstPublished.SetMode(mode)
-	}
-}
-
-//WithRangeDateFirstPublishedPeriod returns function for setting rangeDateFirstPublished
-func WithRangeDateFirstPublishedPeriod(start, end time.Time) OptFunc {
-	return func(o *Option) {
-		o.rangeDateFirstPublished.SetPeriod(start, end)
+		o.SetStartItem(start)
 	}
 }
 
 //WithSeverity returns function for setting severity
 func WithSeverity(se Severity) OptFunc {
 	return func(o *Option) {
-		o.severity = se
+		o.SetSeverity(se)
 	}
 }
 
-//SetStart sets start item number
-func (o *Option) SetStart(start int) {
-	if o == nil {
-		return
+//WithKeyword returns function for setting keyword
+func WithKeyword(k string) OptFunc {
+	return func(o *Option) {
+		o.SetKeyword(k)
 	}
-	o.startItem = start
+}
+
+//WithRangeDatePublicMode returns function for setting rangeDatePublic
+func WithRangeDatePublicMode(mode RangeMode) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDatePublicMode(mode)
+	}
+}
+
+//WithRangeDatePublicPeriod returns function for setting rangeDatePublic
+func WithRangeDatePublicPeriod(start, end time.Time) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDatePublicPeriod(start, end)
+	}
+}
+
+//WithRangeDatePublishedMode returns function for setting rangeDatePublished
+func WithRangeDatePublishedMode(mode RangeMode) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDatePublishedMode(mode)
+	}
+}
+
+//WithRangeDatePublishedPeriod returns function for setting rangeDatePublished
+func WithRangeDatePublishedPeriod(start, end time.Time) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDatePublishedPeriod(start, end)
+	}
+}
+
+//WithRangeDateFirstPublishedMode returns function for setting rangeDateFirstPublished
+func WithRangeDateFirstPublishedMode(mode RangeMode) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDateFirstPublishedMode(mode)
+	}
+}
+
+//WithRangeDateFirstPublishedPeriod returns function for setting rangeDateFirstPublished
+func WithRangeDateFirstPublishedPeriod(start, end time.Time) OptFunc {
+	return func(o *Option) {
+		o.SetRangeDateFirstPublishedPeriod(start, end)
+	}
+}
+
+//SetStartItem sets startItem option
+func (o *Option) SetStartItem(start int) *Option {
+	if o != nil {
+		o.startItem = start
+	}
+	return o
+}
+
+//SetSeverity sets severity option
+func (o *Option) SetSeverity(se Severity) *Option {
+	if o != nil {
+		o.severity = se
+	}
+	return o
+}
+
+//SetKeyword sets keyword option
+func (o *Option) SetKeyword(k string) *Option {
+	if o != nil {
+		o.keyword = k
+	}
+	return o
+}
+
+//SetRangeDatePublicMode sets rangeDatePublic option
+func (o *Option) SetRangeDatePublicMode(mode RangeMode) *Option {
+	if o != nil {
+		o.rangeDatePublic.SetMode(mode)
+	}
+	return o
+}
+
+//SetRangeDatePublicPeriod sets datePublicStart and datePublicEnd option
+func (o *Option) SetRangeDatePublicPeriod(start, end time.Time) *Option {
+	if o != nil {
+		o.rangeDatePublic.SetPeriod(start, end)
+	}
+	return o
+}
+
+//SetRangeDatePublishedMode sets rangeDatePublished option
+func (o *Option) SetRangeDatePublishedMode(mode RangeMode) *Option {
+	if o != nil {
+		o.rangeDatePublished.SetMode(mode)
+	}
+	return o
+}
+
+//SetRangeDatePublishedPeriod sets datePublishedStart and datePublishedEnd option
+func (o *Option) SetRangeDatePublishedPeriod(start, end time.Time) *Option {
+	if o != nil {
+		o.rangeDatePublished.SetPeriod(start, end)
+	}
+	return o
+}
+
+//SetRangeDateFirstPublishedMode sets rangeDateFirstPublished option
+func (o *Option) SetRangeDateFirstPublishedMode(mode RangeMode) *Option {
+	if o != nil {
+		o.rangeDateFirstPublished.SetMode(mode)
+	}
+	return o
+}
+
+//SetRangeDateFirstPublishedPeriod sets dateFirstPublishedStart and dateFirstPublishedEnd option
+func (o *Option) SetRangeDateFirstPublishedPeriod(start, end time.Time) *Option {
+	if o != nil {
+		o.rangeDateFirstPublished.SetPeriod(start, end)
+	}
+	return o
 }
 
 //AddQuery makes query of URL
@@ -96,6 +168,9 @@ func (o Option) AddQuery(query url.Values) {
 	query.Add("startItem", strconv.Itoa(o.startItem))
 	if o.severity != SeverityNone {
 		query.Add("severity", o.severity.String())
+	}
+	if len(o.keyword) > 0 {
+		query.Add("keyword", o.keyword)
 	}
 	if o.rangeDatePublic.IsPeriodSSet() {
 		query.Add("rangeDatePublic", NoRange.String())

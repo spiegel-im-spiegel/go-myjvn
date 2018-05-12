@@ -45,11 +45,12 @@ func TestAddQuery2(t *testing.T) {
 		mode      RangeMode
 		startItem int
 		se        Severity
+		keyword   string
 		query     string
 	}{
-		{mode: RangeWeek, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=w&rangeDatePublic=w&rangeDatePublished=w&severity=h&startItem=1"},
-		{mode: RangeMonth, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=m&rangeDatePublic=m&rangeDatePublished=m&severity=h&startItem=1"},
-		{mode: NoRange, startItem: 1, se: SeverityHigh, query: "rangeDateFirstPublished=n&rangeDatePublic=n&rangeDatePublished=n&severity=h&startItem=1"},
+		{mode: RangeWeek, startItem: 1, se: SeverityHigh, keyword: "ibm", query: "keyword=ibm&rangeDateFirstPublished=w&rangeDatePublic=w&rangeDatePublished=w&severity=h&startItem=1"},
+		{mode: RangeMonth, startItem: 1, se: SeverityHigh, keyword: "ibm", query: "keyword=ibm&rangeDateFirstPublished=m&rangeDatePublic=m&rangeDatePublished=m&severity=h&startItem=1"},
+		{mode: NoRange, startItem: 1, se: SeverityHigh, keyword: "ibm", query: "keyword=ibm&rangeDateFirstPublished=n&rangeDatePublic=n&rangeDatePublished=n&severity=h&startItem=1"},
 	}
 
 	for _, tc := range testCases {
@@ -59,6 +60,7 @@ func TestAddQuery2(t *testing.T) {
 			WithRangeDatePublishedMode(tc.mode),
 			WithRangeDateFirstPublishedMode(tc.mode),
 			WithSeverity(tc.se),
+			WithKeyword(tc.keyword),
 		)
 		query := url.Values{}
 		opt.AddQuery(query)
