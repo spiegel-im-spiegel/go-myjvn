@@ -9,47 +9,47 @@ type Period struct {
 	end   time.Time //end date for search (should mode == NoRange)
 }
 
+//NewPeriod returns nre Period instance
 func NewPeriod() *Period {
 	return &Period{mode: RangeWeek, start: time.Time{}, end: time.Time{}}
 }
 
 //SetMode sets modo
-func (p *Period) SetMode(mode RangeMode) {
-	if p == nil {
-		return
+func (p *Period) SetMode(mode RangeMode) *Period {
+	if p != nil {
+		if mode != NoRange && p.IsPeriodSSet() {
+			return p
+		}
+		switch mode {
+		case RangeWeek, RangeMonth, NoRange:
+			p.mode = mode
+		default:
+		}
+		p.start = time.Time{}
+		p.end = time.Time{}
 	}
-	if mode != NoRange && p.IsPeriodSSet() {
-		return
-	}
-	switch mode {
-	case RangeWeek, RangeMonth, NoRange:
-		p.mode = mode
-	default:
-	}
-	p.start = time.Time{}
-	p.end = time.Time{}
+	return p
 }
 
 //SetPeriod sets modo to NoRange and sets period
-func (p *Period) SetPeriod(start, end time.Time) {
-	if p == nil {
-		return
+func (p *Period) SetPeriod(start, end time.Time) *Period {
+	if p != nil {
+		p.mode = NoRange
+		if start.After(end) {
+			start, end = end, start
+		}
+		p.start = start
+		p.end = end
 	}
-	p.mode = NoRange
-	if start.After(end) {
-		start, end = end, start
-	}
-	p.start = start
-	p.end = end
+	return p
 }
 
 //IsPeriodSSet returns true if sets period
 func (p *Period) IsPeriodSSet() bool {
-	if p == nil {
-		return false
-	}
-	if p.mode == NoRange && !p.start.IsZero() && !p.end.IsZero() {
-		return true
+	if p != nil {
+		if p.mode == NoRange && !p.start.IsZero() && !p.end.IsZero() {
+			return true
+		}
 	}
 	return false
 }
